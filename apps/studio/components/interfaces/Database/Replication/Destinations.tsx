@@ -1,4 +1,3 @@
-import { noop } from 'lodash'
 import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
 
@@ -14,11 +13,7 @@ import NewDestinationPanel from './DestinationPanel'
 import { DestinationRow } from './DestinationRow'
 import { PIPELINE_ERROR_MESSAGES } from './Pipeline.utils'
 
-interface DestinationsProps {
-  onSelectPipeline?: (pipelineId: number, destinationName: string) => void
-}
-
-export const Destinations = ({ onSelectPipeline = noop }: DestinationsProps) => {
+export const Destinations = () => {
   const [showNewDestinationPanel, setShowNewDestinationPanel] = useState(false)
   const [filterString, setFilterString] = useState<string>('')
   const { ref: projectRef } = useParams()
@@ -122,7 +117,6 @@ export const Destinations = ({ onSelectPipeline = noop }: DestinationsProps) => 
                   isLoading={isPipelinesLoading}
                   isError={isPipelinesError}
                   isSuccess={isPipelinesSuccess}
-                  onSelectPipeline={onSelectPipeline}
                 />
               )
             })}
@@ -139,15 +133,15 @@ export const Destinations = ({ onSelectPipeline = noop }: DestinationsProps) => 
                 'flex flex-col px-10 rounded-lg justify-center items-center py-8 mt-4'
               )}
             >
-              <h4 className="text-lg">Send data to your first destination</h4>
-              <p className="prose text-sm text-center mt-2">
+              <h4>Send data to your first destination</h4>
+              <p className="prose text-sm text-center mt-1 max-w-full">
                 Use destinations to improve performance or run analysis on your data via
                 integrations like BigQuery
               </p>
               <Button
                 icon={<Plus />}
                 onClick={() => setShowNewDestinationPanel(true)}
-                className="mt-6"
+                className="mt-4"
               >
                 Add destination
               </Button>
