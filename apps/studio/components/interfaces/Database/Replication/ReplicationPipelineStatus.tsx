@@ -158,6 +158,7 @@ export const ReplicationPipelineStatus = () => {
                 isError={isPipelineStatusError}
                 isSuccess={isPipelineStatusSuccess}
                 requestStatus={requestStatus}
+                pipelineId={pipelineId}
               />
             </div>
           </div>
@@ -190,7 +191,13 @@ export const ReplicationPipelineStatus = () => {
             />
           </div>
           <Button asChild type="default">
-            <Link href={`/project/${projectRef}/logs/etl-replication-logs`}>View logs</Link>
+            <Link
+              href={`/project/${projectRef}/logs/etl-replication-logs?f=${encodeURIComponent(
+                JSON.stringify({ pipeline_id: pipelineId })
+              )}`}
+            >
+              View logs
+            </Link>
           </Button>
           <Button
             type={statusName === 'stopped' ? 'primary' : 'default'}

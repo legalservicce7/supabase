@@ -138,6 +138,7 @@ export const DestinationRow = ({
                 isError={isPipelineStatusError}
                 isSuccess={isPipelineStatusSuccess}
                 requestStatus={requestStatus}
+                pipelineId={pipeline?.id}
               />
             )}
           </Table.td>
