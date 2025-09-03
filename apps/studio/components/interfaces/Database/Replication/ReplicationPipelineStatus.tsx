@@ -16,7 +16,7 @@ import {
   PipelineStatusRequestStatus,
   usePipelineRequestStatus,
 } from 'state/replication-pipeline-request-status'
-import { Badge, Button, cn } from 'ui'
+import { Badge, Button, cn, Tooltip, TooltipContent, TooltipTrigger, copyToClipboard } from 'ui'
 import { GenericSkeletonLoader } from 'ui-patterns'
 import { Input } from 'ui-patterns/DataInputs/Input'
 import { ErroredTableDetails } from './ErroredTableDetails'
@@ -138,7 +138,19 @@ export const ReplicationPipelineStatus = () => {
           </Button>
           <div>
             <div className="flex items-center gap-x-3">
-              <h3 className="text-xl font-semibold">{destinationName || 'Pipeline'}</h3>
+              <Tooltip>
+                <TooltipTrigger>
+                  <h3
+                    className="text-xl font-semibold cursor-pointer hover:underline"
+                    onClick={() => {
+                      if (pipelineId) copyToClipboard(String(pipelineId))
+                    }}
+                  >
+                    {destinationName || 'Pipeline'}
+                  </h3>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">Click to copy pipeline ID</TooltipContent>
+              </Tooltip>
               <PipelineStatus
                 pipelineStatus={pipelineStatusData?.status}
                 error={pipelineStatusError}
@@ -184,7 +196,12 @@ export const ReplicationPipelineStatus = () => {
             type={statusName === 'stopped' ? 'primary' : 'default'}
             onClick={() => onTogglePipeline()}
             loading={isPipelineError || isStartingPipeline || isStoppingPipeline}
-            disabled={!PIPELINE_ACTIONABLE_STATES.includes((statusName ?? '') as any)}
+            disabled={
+              isStartingPipeline ||
+              isStoppingPipeline ||
+              isEnablingDisabling ||
+              !PIPELINE_ACTIONABLE_STATES.includes((statusName ?? '') as any)
+            }
           >
             {statusName === 'stopped' ? 'Start' : 'Stop'} pipeline
           </Button>
